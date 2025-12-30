@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zTexuss - InfoMe</title>
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Video Background -->
+    <video id="videoBackground" autoplay muted loop>
+        <source src="assets/fundov.mp4" type="video/mp4">
+    </video>
+
+    <!-- Bubbles Container -->
+    <div id="bubblesContainer" class="bubbles-container"></div>
+
+    <!-- Entry Screen -->
+     <div id="entry-screen" class="entry-screen">
+        <div class="entry-content">
+            <h1 class="entry-title">zTexuss</h1>
+            <p class="entry-subtitle">Welcome to my digital space</p>
+            <button id="enter-btn" class="enter-btn">
+                <span>ENTER</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content hidden">
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="main-title">zTexuss</h1>
+                <p class="subtitle">Full-Stack Developer & Digital Creator</p>
+            </header>
+
+            <!-- Digital Clock -->
+            <div class="clock-container">
+                <div id="digital-clock" class="digital-clock">00:00:00</div>
+                <div class="clock-label">LOCAL TIME</div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="https://github.com/zTexuss" class="social-btn" target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <span class="social-label">GitHub</span>
+                </a>
+
+                <a href="https://instagram.com/theusxzzo" class="social-btn" target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+
+                <a href="https://discord.com/users/1298271573849145375" class="social-btn" target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <span class="social-label">Discord</span>
+                </a>
+
+                <a href="https://youtube.com/@zTexuss" class="social-btn" target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+            </div>
+
+            <!-- Creator Tag -->
+            <div class="creator-tag">
+                <div class="pulse-dot"></div>
+                <span>feito por zTexuss 💜</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="assets/fundoa.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</body>
+</html>
