@@ -186,7 +186,6 @@ html {
     height: 3px;
     background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
     animation: scan 3s linear infinite;
-    z-index: 1002;
     box-shadow: 0 0 10px var(--primary-purple), 0 0 20px var(--primary-purple);
 }
 
