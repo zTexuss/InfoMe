@@ -53,7 +53,6 @@ function createBubbles() {
     }
 }
 
-// FIX #1: Entry screen — hidden agora usa classe CSS corretamente
 function initializeEntryScreen() {
     const entryScreen = document.getElementById('entry-screen');
     const mainContent = document.getElementById('main-content');
@@ -74,7 +73,6 @@ function initializeEntryScreen() {
             backgroundMusic.play().catch(() => {});
         }
 
-        // FIX #1: usa classes corretas — entry some com fade, main aparece com display:flex
         setTimeout(() => {
             entryScreen.classList.add('hidden');
 
@@ -87,7 +85,6 @@ function initializeEntryScreen() {
     });
 }
 
-// FIX #3: animateMainContent sem conflito com IntersectionObserver
 // Removido o reset de opacity inline — a animação do .main-content.visible já faz o fade
 function animateMainContent() {
     const container = document.querySelector('.container');
@@ -103,7 +100,7 @@ function animateMainContent() {
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             element.style.opacity = '1';
             element.style.transform = 'translateY(0)';
-        }, 300 + index * 150); // delay extra para esperar o fade do container
+        }, 300 + index * 150);
     });
 }
 
@@ -136,13 +133,12 @@ function initializeKeyboardShortcuts() {
         const mainContent = document.getElementById('main-content');
 
         // Enter key to skip entry screen
-        if (e.key === 'Enter' && !entryScreen.classList.contains('hidden')) {
+        if (e.key === 'Enter' && entryScreen && !entryScreen.classList.contains('hidden')) {
             const enterBtn = document.getElementById('enter-btn');
             if (enterBtn) enterBtn.click();
         }
-
-        // FIX #5: ESC agora tem fade suave igual ao ENTER + para a música
-        if (e.key === 'Escape' && entryScreen.classList.contains('hidden')) {
+        
+        if (e.key === 'Escape' && entryScreen && mainContent && entryScreen.classList.contains('hidden')) {
             mainContent.classList.remove('visible');
             mainContent.classList.add('hidden');
 
@@ -181,7 +177,6 @@ function addGlitchEffect() {
     });
 }
 
-// FIX #2: Mouse parallax — pausa animação CSS e usa transform diretamente
 function initializeMouseEffects() {
     const container = document.querySelector('.container');
     if (!container) return;
@@ -201,7 +196,6 @@ function initializeMouseEffects() {
         const rotateX = deltaY * 3;
         const rotateY = deltaX * 3;
 
-        // Pausa animação CSS e aplica transform com translateY fixo em -15px (meio da float)
         container.classList.add('mouse-active');
         container.style.transform = `
             translateY(-15px)
@@ -211,16 +205,11 @@ function initializeMouseEffects() {
         `;
     });
 
-    // FIX #2: Ao sair, retoma animação CSS
     document.addEventListener('mouseleave', () => {
         container.classList.remove('mouse-active');
         container.style.transform = '';
     });
 }
-
-// Performance optimization with Intersection Observer
-// FIX #3: removido — conflitava com animateMainContent; não é necessário aqui
-// Os elementos já são animados pelo animateMainContent ao entrar
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
