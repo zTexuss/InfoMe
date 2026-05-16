@@ -243,3 +243,13 @@ window.addEventListener('load', () => {
         }
     });
 });
+
+// Ignore noisy extension messaging errors that are not caused by this page.
+window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason;
+    const message = typeof reason === 'string' ? reason : reason?.message;
+
+    if (typeof message === 'string' && message.includes('message channel closed before a response was received')) {
+        event.preventDefault();
+    }
+});
