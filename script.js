@@ -15,53 +15,32 @@ function initializeCursor() {
     if (isTouchDevice) return;
 
     const cursor = document.getElementById('custom-cursor');
-    const trail = document.getElementById('cursor-trail');
-    if (!cursor || !trail) return;
+    if (!cursor) return;
 
     cursor.style.display = 'block';
-    trail.style.display = 'block';
-
-    let trailX = 0, trailY = 0;
-    let cursorX = 0, cursorY = 0;
 
     document.addEventListener('mousemove', (e) => {
-        cursorX = e.clientX;
-        cursorY = e.clientY;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top  = cursorY + 'px';
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
     });
-
-    // Trail suavizado via rAF
-    function animateTrail() {
-        trailX += (cursorX - trailX) * 0.15;
-        trailY += (cursorY - trailY) * 0.15;
-        trail.style.left = trailX + 'px';
-        trail.style.top  = trailY + 'px';
-        requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
 
     // Hover em elementos clicáveis
     const hoverTargets = 'a, button, .social-btn, .enter-btn, [role="button"]';
     document.querySelectorAll(hoverTargets).forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.classList.add('cursor-hover');
-            trail.classList.add('cursor-hover');
-        });
-        el.addEventListener('mouseleave', () => {
-            cursor.classList.remove('cursor-hover');
-            trail.classList.remove('cursor-hover');
-        });
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
     });
+    
+    document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+}
 
     // Esconde cursor quando sai da janela
     document.addEventListener('mouseleave', () => {
         cursor.style.opacity = '0';
-        trail.style.opacity  = '0';
     });
     document.addEventListener('mouseenter', () => {
         cursor.style.opacity = '1';
-        trail.style.opacity  = '1';
     });
 }
 
