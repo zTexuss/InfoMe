@@ -24,6 +24,16 @@ function initializeCursor() {
         cursor.style.top  = e.clientY + 'px';
     });
 
+    const hoverTargets = 'a, button, .social-btn, .enter-btn, [role="button"]';
+    document.querySelectorAll(hoverTargets).forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+    });
+
+    document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+}
+
     // Hover em elementos clicáveis
     const hoverTargets = 'a, button, .social-btn, .enter-btn, [role="button"]';
     document.querySelectorAll(hoverTargets).forEach(el => {
