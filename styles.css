@@ -43,26 +43,6 @@
     filter: drop-shadow(0 0 8px var(--primary-violet));
 }
 
-/* Cursor trail (anel que segue com delay) */
-#cursor-trail {
-    position: fixed;
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(157, 78, 221, 0.6);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.25s ease, width 0.2s ease, height 0.2s ease, opacity 0.3s ease;
-    display: none;
-}
-
-#cursor-trail.cursor-hover {
-    width: 40px;
-    height: 40px;
-    border-color: rgba(199, 125, 255, 0.4);
-}
-
 body {
     font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--darker-bg);
