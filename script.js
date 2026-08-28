@@ -78,7 +78,7 @@ function initializeEntryScreen() {
 
         const backgroundMusic = document.getElementById('backgroundMusic');
         if (backgroundMusic) {
-            backgroundMusic.volume = 0.3;
+            backgroundMusic.volume = 0.5;
             backgroundMusic.play().catch(() => {});
         }
 
@@ -87,6 +87,9 @@ function initializeEntryScreen() {
             mainContent.classList.remove('hidden');
             mainContent.classList.add('visible');
             animateMainContent();
+
+            const volumeControl = document.getElementById('volumeControl');
+            if (volumeControl) volumeControl.classList.add('visible');
         }, 500);
     }
 
@@ -133,6 +136,125 @@ function initializeSocialCards() {
     });
 }
 
+function initializeVolumeControl() {
+    const control       = document.getElementById('volumeControl');
+    const toggleBtn      = document.getElementById('volumeToggle');
+    const icon           = document.getElementById('volumeIcon');
+    const track          = document.getElementById('volumeTrack');
+    const fill           = document.getElementById('volumeFill');
+    const volumeDown     = document.getElementById('volumeDown');
+    const volumeUp       = document.getElementById('volumeUp');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    if (!control || !toggleBtn || !icon || !track || !fill || !backgroundMusic) return;
+
+    let currentVolume = 50;
+    let lastVolume     = 50;
+    let isDragging      = false;
+
+    function updateIcon(value) {
+        icon.className = value == 0
+            ? 'fas fa-volume-mute'
+            : value < 50
+                ? 'fas fa-volume-down'
+                : 'fas fa-volume-up';
+    }
+
+    function setVolume(value) {
+        currentVolume = Math.round(Math.min(100, Math.max(0, value)));
+        backgroundMusic.volume = currentVolume / 100;
+        fill.style.width = currentVolume + '%';
+        track.setAttribute('aria-valuenow', currentVolume);
+        updateIcon(currentVolume);
+        if (currentVolume > 0) lastVolume = currentVolume;
+    }
+
+    function valueFromClientX(clientX) {
+        const rect = track.getBoundingClientRect();
+        const ratio = (clientX - rect.left) / rect.width;
+        return ratio * 100;
+    }
+
+    function expand() { control.classList.add('expanded'); }
+    function collapse() { if (!isDragging) control.classList.remove('expanded'); }
+
+    // Abre no hover (desktop) e continua aberto enquanto o mouse estiver em cima
+    control.addEventListener('mouseenter', expand);
+    control.addEventListener('mouseleave', collapse);
+    control.addEventListener('focusin', expand);
+    control.addEventListener('focusout', collapse);
+
+    // Em touch (sem hover), tocar no controle abre o widget sem bloquear os controles.
+    control.addEventListener('pointerdown', (e) => {
+        if (e.target !== track && !track.contains(e.target)) expand();
+    });
+
+    // Toque fora do widget fecha ele de novo (relevante em touch)
+    document.addEventListener('click', (e) => {
+        if (!control.contains(e.target)) collapse();
+    });
+
+    // Arraste na trilha (mouse e touch)
+    track.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        control.classList.add('active');
+        track.setPointerCapture(e.pointerId);
+        track.focus();
+        setVolume(valueFromClientX(e.clientX));
+    });
+
+    track.addEventListener('click', (e) => {
+        setVolume(valueFromClientX(e.clientX));
+    });
+
+    track.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        setVolume(currentVolume + (e.deltaY < 0 ? 5 : -5));
+    }, { passive: false });
+
+    track.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        setVolume(valueFromClientX(e.clientX));
+    });
+
+    function endDrag(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        control.classList.remove('active');
+        if (e?.pointerId !== undefined) {
+            try { track.releasePointerCapture(e.pointerId); } catch (_) {}
+        }
+        if (!control.matches(':hover')) control.classList.remove('expanded');
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    // Teclado (acessibilidade): setas ajustam o volume
+    track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            setVolume(currentVolume + 5);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            setVolume(currentVolume - 5);
+        }
+    });
+
+    toggleBtn.addEventListener('click', () => {
+        if (currentVolume > 0) {
+            lastVolume = currentVolume;
+            setVolume(0);
+        } else {
+            setVolume(lastVolume || 30);
+        }
+    });
+
+    volumeDown.addEventListener('click', () => setVolume(currentVolume - 10));
+    volumeUp.addEventListener('click', () => setVolume(currentVolume + 10));
+
+    setVolume(lastVolume);
+}
+
 function initializeKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
         const entryScreen = document.getElementById('entry-screen');
@@ -151,6 +273,8 @@ function initializeKeyboardShortcuts() {
                 backgroundMusic.pause();
                 backgroundMusic.currentTime = 0;
             }
+
+            document.getElementById('volumeControl')?.classList.remove('visible');
 
             setTimeout(() => { entryScreen.classList.remove('hidden'); }, 50);
         }
@@ -206,6 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeSocialCards();
     initializeMouseEffects();
     initializeKeyboardShortcuts();
+    initializeVolumeControl();
 
     setInterval(addGlitchEffect, 5000);
 

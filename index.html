@@ -12,6 +12,25 @@
 
     <!-- Cursor Custom -->
     <img id="custom-cursor" src="assets/cursor.png" alt="" aria-hidden="true">
+
+    <!-- Volume Control -->
+    <div id="volumeControl" class="volume-control">
+        <button id="volumeToggle" class="volume-toggle" aria-label="Ativar/desativar volume">
+            <i id="volumeIcon" class="fas fa-volume-up"></i>
+        </button>
+        <div class="volume-slider-wrapper">
+            <button id="volumeDown" class="volume-step" type="button" aria-label="Diminuir volume">
+                <i class="fas fa-minus"></i>
+            </button>
+            <div id="volumeTrack" class="volume-track" role="slider" tabindex="0"
+                 aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                <div id="volumeFill" class="volume-fill"></div>
+            </div>
+            <button id="volumeUp" class="volume-step" type="button" aria-label="Aumentar volume">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
     
     <!-- Video Background -->
     <video id="videoBackground" autoplay muted loop>
